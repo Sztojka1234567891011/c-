@@ -1,0 +1,105 @@
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace megyek
+{
+    class megye
+    {
+        private double terulet { get; set; }
+        public int lakossag { get; set; }
+        public string nev { get; set; }
+        private List<string> telepulesNevek { get; set; }
+        public int telepulesekSzama
+        {
+            get
+            {
+                return telepulesNevek.Count();
+            }
+        }
+        public megye(string nev, int lakossag)
+        {
+            this.nev = nev;
+            this.lakossag = lakossag;
+
+            this.telepulesNevek = new List<string>();
+            this.terulet = 0;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //ellenörzött input
+            // a megyék száma: egész szám, 1-100 között
+            int megyekSzama;
+            do
+            {
+                try
+                {
+                    //input
+                    Console.Write("Kérem a megyék számát: ");
+                    megyekSzama = Convert.ToInt32(Console.ReadLine());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    megyekSzama = 0;
+                }
+            }
+            while (megyekSzama < 1 || megyekSzama > 100);
+
+            megye[] megyek = new megye[megyekSzama];
+
+
+            for (int i = 0; i < megyekSzama; i++)
+            {
+                Console.Write($"{i + 1}. megye neve: ");
+                string megyenev = Console.ReadLine();
+
+                int tmp;
+                do
+                {
+                    try
+                    {
+                        Console.Write($"{megyenev} megye lakosainak száma: ");
+                        tmp = (Convert.ToInt32(Console.ReadLine()));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        tmp = -1;
+                    }
+                }
+                while (tmp < 0 || tmp > 10000000);
+
+                megyek[i] = new megye(megyenev, tmp);
+
+            }
+            /*
+            Console.WriteLine($"Összes lakos száma: {megyeLakos.Sum()}");
+
+            Console.WriteLine($"Megyék átlagos lakossága: {megyeLakos.Average()}");
+
+            int maxIndex = 0;
+            for (int i = 1; i < megyeLakos.Count; i++)
+            {
+                if (megyeLakos[i] > megyeLakos[maxIndex]) maxIndex = i;
+            }
+            Console.WriteLine($"A legtöbb lakossal rendelkező megye neve: {megyeNev[maxIndex]}");
+
+            Console.WriteLine("Az átlagos lakosságszámnál kisebb megyék:");
+            for (int i = 0; i < megyeLakos.Count; i++)
+            {
+                if (megyeLakos[i] < megyeLakos.Average()) Console.WriteLine(i);
+            }
+            */
+            Console.WriteLine();
+        }
+
+    }
+}
