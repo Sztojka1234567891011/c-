@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,10 +58,10 @@ namespace megyek
 
 
             for (int i = 0; i < megyekSzama; i++)
-            {
+            {                
                 Console.Write($"{i + 1}. megye neve: ");
                 string megyenev = Console.ReadLine();
-
+             
                 int tmp;
                 do
                 {
@@ -100,6 +101,6 @@ namespace megyek
             */
             Console.WriteLine();
         }
-
+       
     }
 }
