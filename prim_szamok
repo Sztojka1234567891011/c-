@@ -1,0 +1,35 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Kérek egy egész számot: ");
+
+        if (!long.TryParse(Console.ReadLine(), out long szam))
+        {
+            Console.WriteLine("Hibás bemenet, egész számot adj meg!");
+            return;
+        }
+
+        if (EPrim(szam))
+            Console.WriteLine($"{szam} prímszám.");
+        else
+            Console.WriteLine($"{szam} nem prímszám.");
+    }
+
+    static bool EPrim(long n)
+    {
+        if (n < 2) return false;      // 0, 1 és a negatív számok nem prímek
+        if (n == 2) return true;      // a 2 az egyetlen páros prím
+        if (n % 2 == 0) return false; // többi páros szám nem prím
+
+        // Elég a szám négyzetgyökéig vizsgálni az osztókat, csak páratlanokat
+        for (long i = 3; i * i <= n; i += 2)
+        {
+            if (n % i == 0)
+                return false;
+        }
+        return true;
+    }
+}
