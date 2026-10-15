@@ -1,0 +1,124 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+
+namespace objektumok
+{
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            diák PGésDiák = new diák("Béla; nem; 65,1; false; 2005-05-15; 11");
+            Console.WriteLine(PGésDiák.ToString());
+            PGésDiák.neve = "Ede";
+            Console.WriteLine(PGésDiák.ToString());
+
+
+            List<diák> PGdiákok = new List<diák>();
+            //PGdiákok.Add(new diák("Anna; van; 55,2; true; 2010-03-22; 10"));  
+            //PGdiákok.Add(new diák("Bence; van; 70,5; false; 2011-11-10; 11"));
+            //PGdiákok.Add(new diák("Máté; nincs; 60,0; true; 2010-07-15; 10"));
+
+            StreamReader olvas = new StreamReader("tanulok_adatai.txt", Encoding.UTF8 );
+            while (!olvas.EndOfStream)
+            {
+                string line = olvas.ReadLine();
+                PGdiákok.Add(new diák(line));
+            }
+
+            olvas.Close();
+
+            Console.WriteLine("a pg-s diákok összesitett életkora: " + PGdiákok.Sum(x => x.életkor()));
+            Console.WriteLine("a pg-s diákok átlagos életkora: " + PGdiákok.Average(x => x.életkor()));
+            
+            Console.WriteLine(PGdiákok[0].ToString());
+            Console.WriteLine("Tudunak úszni a következők: ");
+            for (int i = 0; i < PGdiákok.Count; i++)
+            {
+                if (PGdiákok[i].tudeuszni())
+                {
+                    PGdiákok[i].szépkiírás();
+                }
+            }   
+            Console.ReadKey();
+
+        }
+    }
+}
+
+-----------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace objektumok
+{
+    internal class diák
+    {
+
+        private const string iskola = "PG";
+        private string SNI { get; set; }
+        private double testsúly { get; set; }
+        private bool uszásTudás { get; set; }
+        
+        public string neve { get; set; }
+        public DateTime születésiDátum { get; set; }
+        public int évfolyam{ get; set; }
+        
+        public diák(string line)
+        {
+            string[] adatok = line.Split(';');
+            
+            this.neve = adatok[0];
+            this.SNI = adatok[1];
+            this.testsúly = double.Parse(adatok[2]);
+            this.uszásTudás = bool.Parse(adatok[3]);
+            this.születésiDátum = DateTime.Parse(adatok[4]);
+            this.évfolyam = int.Parse(adatok[5]);
+        }
+        public void kiegészítés(string szoveg, double súly, bool usz)
+        {
+        this.SNI = szoveg;
+        this.testsúly = súly;
+        this.uszásTudás = usz;
+        }
+        public bool tudeuszni() 
+        {
+            return uszásTudás;
+        }
+        public void szépkiírás() 
+        {
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.Magenta;
+
+            Console.WriteLine($"A diák neve: {neve}\n\tSNI: {SNI}\n\tTestsúly: {testsúly}");
+            Console.ResetColor();
+
+
+        }
+        public int életkor()
+        {
+            DateTime maiNap = DateTime.Now;
+            int életkor = maiNap.Year - születésiDátum.Year;
+            if (maiNap < születésiDátum.AddYears(életkor))
+            {
+                életkor--;
+            }
+            return életkor;
+        }
+
+        public override string ToString()
+        {
+            return $"A diák neve: {neve}\n\tSNI: {SNI}\n\tTestsúly: {testsúly}";
+        }
+        
+    }
+}
